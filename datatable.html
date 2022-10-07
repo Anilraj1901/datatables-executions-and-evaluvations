@@ -1,0 +1,427 @@
+<TITLE>DATATABLE</TITLE>
+<TITLE>DATATABLE</TITLE>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
+<table id="example" class="display">
+    <thead>
+        <tr>
+            <th>name</th>
+            <th>age</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>anil</td>
+            <td>22</td>
+        </tr>
+        <tr>
+            <td>anil</td>
+            <td>22</td>
+        </tr>
+    </tbody>
+</table>
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- datatable -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- buttons -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<!--pagination,sorting -->
+<script src="//cdn.datatables.net/plug-ins/1.12.1/sorting/Case-Sensitive.js"></script>
+
+<!--  include data array method  -->
+<script>
+    var data = [
+    [
+        "anilraj",
+        "22",
+    ]
+]
+$('#example').DataTable( {
+    data: data
+} );
+</script>
+
+<!-- include data instance method -->
+<script>
+function Employee (name,age){
+    this.name = name;
+    this.age = age;
+};
+$('#example').DataTable( {
+    data: [
+        new Employee( "anilraj","22"),
+    ],
+    columns: [
+        { data: 'name' },
+        { data: 'age' },
+    ]
+} );
+</script>
+
+<!-- Adding format -->
+<script>var namesType = $.fn.dataTable.absoluteOrder( [
+    { value: '', position: 'top' }
+  ] );
+ 
+  var numbersType = $.fn.dataTable.absoluteOrderNumber( [
+    { value: 'N/A', position: 'bottom' }
+  ] );
+ 
+  $('#example').DataTable( {
+    columnDefs: [
+      { type: namesType, targets: 0 },
+       { type: numbersType, targets: 1 }
+    ]
+  } );
+function Employee ( name,age){
+    this.name = name;
+    this.age = age;
+};
+$('#example').DataTable( {
+    data: [
+        new Employee( "anilraj",
+        "22" ),
+    ],
+    columns: [
+        { data: 'name',
+        render: function ( data, type, row ) {
+        return '*'+ data }},
+        { data: 'age',
+        render: function ( data, type, row ) {
+        return data+ '%' }},
+    ]
+} );
+</script>
+
+<!-- Number helper -->
+<script>
+function Employee ( name,age){
+    this.name = name;
+    this.age = age;
+};
+$('#example').DataTable( {
+    data: [
+        new Employee( "anilraj",
+        "22",
+       ),
+    ],
+    columns: [
+        { data: 'name',
+        render: DataTable.render.number( null, null, 2, '$' )},
+        { data: 'age' ,
+        render: DataTable.render.number( null, null, 2, '$' )},
+    ]
+} );
+</script>
+
+<!--computing values  -->
+<script>
+function Employee ( wieght,height,bmi){
+    this.wieght = wieght;
+    this.height = height;
+    this.bmi = bmi;
+};
+ 
+$('#example').DataTable( {
+    data: [
+        new Employee("20","22","0"),
+         new Employee("33","28","0"),
+    ],
+    columns: [
+        {data: 'wieght',},
+        { data: 'height' },
+        { 
+    data: null,
+    render: function ( data, type, row ) {
+        return Math.round( ( row.wieght - row.height ))+'%';
+    }
+} ,
+    ]
+} );
+</script>
+
+<!-- transforming data -->
+<script>
+    function Employee ( dob,age){
+    this.dob = dob;
+    this.age = age;
+};
+$('#example').DataTable( {
+    data: [
+        new Employee( "19-06-2000",
+        "22" ),
+    ],
+    columns: [
+        { data: 'dob',
+        render: function ( data, type, row ) {
+        var dateSplit = data.split('-');
+        return type === "display" || type === "filter" ?
+            dateSplit[1] +'-'+ dateSplit[2] +'-'+ dateSplit[0] :
+            data;}},
+        {data: 'age'}
+    ]
+} )
+</script>
+
+<!-- adding the two columns -->
+<script>
+function Employee ( firstname,lastname){
+    this.firstname = anil;
+    this.lastname = raj;
+};
+$('#example').DataTable( {
+    data: [
+        new Employee( "anil",
+        "raj" ),
+    ],
+    columns: [
+        { data: 'name'},
+        {data: null,
+        render: function ( data, type, row ) {
+        return data.firstname +' '+ data.lastname;}}
+    ]
+} );
+</script>
+
+<!-- pagging,search,order,paging -->
+<script>
+    $('#example').DataTable( {
+    paging: true,
+    scrollY: 400,
+    searching: true,
+    ordering:  true,
+} );
+</script>
+
+
+<!-- non jquery -->
+<script>
+    new DataTable( '#example', {
+    paging: true,
+    scrollY: 400
+} );
+</script>
+
+<!-- chaining -->
+<script>
+var table = $('#example').DataTable();
+table.search( '22').draw();
+// or
+var table = $('#example').DataTable();
+table.search( 'anil');
+table.draw();
+</script>
+
+<!-- data align -->
+<script>
+    $('#example').DataTable( {
+  columnDefs: [
+    {
+        targets: 1,
+        className: 'dt-body-center'
+    }
+  ]
+} );
+// or
+$('#example').on( 'draw.dt', function () {
+    alert( 'Table' );
+} );
+</script>
+
+<!-- customising the button name -->
+<script>
+    $('#example').DataTable( {
+  dom: 'Bfrtip',
+    buttons: [
+      
+        {
+            extend: 'copy',
+            text: 'Copy to clipboard'
+        },
+        {
+        extend:'csv',
+        text:'csv to add'
+        },
+        'excel',
+        'pdf'
+    ]
+} );
+
+</script>
+
+<!--add a classname for a buttons  -->
+<script>
+    $('#example').DataTable( {
+ dom: 'Bfrtip',
+    buttons: {
+        buttons: [
+            { extend: 'copy', className: 'copyButton' },
+            { extend: 'excel', className: 'excelButton' }
+        ]
+    }
+} );
+</script>
+
+<!-- key button  -->
+<script>
+    $('#example').DataTable( {
+ dom: 'Bfrtip',
+    buttons: [
+       {
+                text: 'Button <u><i>shift</i> 2</u>',
+                key: {
+                    shiftKey: true,//altKey,metaKey,ctrlKey
+                    key: 'p'
+                },
+                action: function ( e, dt, node, config ) {
+                    alert( 'Button 2 activated' );
+                }
+            }
+    ]
+} );
+
+$('#example').DataTable( {
+  dom: 'Bfrtip',
+    buttons: [
+        {
+            extend: 'copy',
+            text: '<u>C</u>opy',
+            key: {
+                key: 'c',
+                ctrlKey: true
+            }
+        }
+    ]
+} );
+
+</script>
+
+<!-- modern browser button -->
+<script>
+    $('#example').DataTable( {
+  dom: 'Bfrtip',
+
+    buttons: [
+        'copyHtml5',
+        'excelHtml5',
+        'pdfHtml5',
+        'csvHtml5'
+    ]
+} );
+</script>
+
+<!-- collection of buttons -->
+<script>
+    $('#example').DataTable( {
+  dom: 'Bfrtip',
+
+    buttons: [
+        {
+            extend: 'collection',
+            text: 'Export',
+            buttons: [ 'csv', 'excel', 'pdf' ,'copy','print']
+        }
+    ]
+} );
+
+</script>
+
+<!-- bold text -->
+<script>
+    $(document).ready( function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [ {
+            extend: 'excelHtml5',
+            customize: function( xlsx ) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+ 
+                $('row c[r^="C"]', sheet).attr( 's', '1' );
+            }
+        } ]
+    } );
+} );
+</script>
+
+<!-- heading message -->
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdfHtml5',
+                messageTop: 'PDF created by PDFMake with Buttons for DataTables.'
+            }
+        ]
+    } );
+} );
+</script>
+
+<!-- pagging types  -->
+<script>
+    $(document).ready(function() {
+      $('#example').dataTable( {
+          "sPaginationType": "simple_numbers_no_ellipses"//ellipses,extjs,four_button,full_numbers_no_ellipses,input,scrolling,select,simple_incremental_bootstrap
+      } );
+  } );
+</script>
+
+<!-- fitering by capital to small -->
+<script>
+    $(document).ready( function () {
+ var table = $('#example').DataTable({
+         "columnDefs": [
+          {"type": "case-sensitive",targets:0}
+       ]
+    });
+} );
+</script>
+
+<!-- absolute sorting -->
+<script>
+    var namesType = $.fn.dataTable.absoluteOrder( [
+    { value: '', position: 'top' }
+  ] );
+ 
+  var numbersType = $.fn.dataTable.absoluteOrderNumber( [
+    { value: 'N/A', position: 'bottom' }
+  ] );
+ 
+  $('#example').DataTable( {
+    columnDefs: [
+      { type: namesType, targets: 0 },
+       { type: numbersType, targets: 1 }
+    ]
+  } );
+</script>
+
+<!-- fixed columns -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/4.1.0/css/fixedColumns.dataTables.min.css"/>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+    var table = $('#example').DataTable( {
+        scrollY:        "300px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         false,
+        fixedColumns:   {
+            left: 1,
+            right: 1
+        }
+    } );
+} );
+</script>
+
+
